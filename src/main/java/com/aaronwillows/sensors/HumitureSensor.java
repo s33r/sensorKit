@@ -10,7 +10,6 @@ import java.util.concurrent.TimeUnit;
 public class HumitureSensor implements ISensor {
     private final int TIMING_MAX = 85;
 
-    final GpioController gpio = GpioFactory.getInstance();
 
     private boolean enabled = false;
 
@@ -30,7 +29,7 @@ public class HumitureSensor implements ISensor {
     }
 
     public void disable() {
-        if(GpioUtil.isExported(dataPinAddress)) {
+        if (GpioUtil.isExported(dataPinAddress)) {
             GpioUtil.unexport(dataPinAddress);
         }
 

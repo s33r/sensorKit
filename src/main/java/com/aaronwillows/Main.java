@@ -10,17 +10,45 @@ public class Main {
     public static void main(String[] args) throws Exception {
         com.pi4j.wiringpi.Gpio.wiringPiSetup();
 
+
         System.out.println("Board: " + SystemInfo.getBoardType().toString());
 
-        testIrObstacle();
+        humitureLcdTest();
     }
 
-    private static void testLcd1602() {
+    private static void humitureLcdTest() throws Exception {
         Lcd1602 lcd = new Lcd1602();
         lcd.enable();
 
+        lcd.WriteString("T: ", 0, 0);
+        lcd.WriteString("H: ", 0, 1);
+
+        HumitureSensor sensor = new HumitureSensor(0);
+        sensor.enable();
+
+        while (true) {
+            HumitureData data = sensor.getData();
+
+            String isValid = "(i) ";
+
+            if (data.isValid()) {
+                isValid = "(v) ";
+            }
+
+            lcd.WriteString(isValid + Double.toString(data.getTemperature()), 3, 0, false);
+            lcd.WriteString(isValid + Double.toString(data.getHumidity()), 3, 1, false);
+        }
 
 
+    }
+
+    private static void testLcd1602() {
+        String dataString = "Hello World - This is a really long string. There this should wrap and just overflow. This last sentence is just in case";
+
+        Lcd1602 lcd = new Lcd1602();
+        lcd.enable();
+
+        lcd.WriteString(dataString, 0, 0);
 
         lcd.disable();
     }
