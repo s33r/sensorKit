@@ -1,5 +1,7 @@
-package com.aaronwillows.sensors;
+package com.aaronwillows.devices;
 
+import com.aaronwillows.IDevice;
+import com.aaronwillows.sensors.IColorSink;
 import com.pi4j.wiringpi.SoftPwm;
 
 import java.util.concurrent.TimeUnit;
@@ -7,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by Administrator on 6/10/2016.
  */
-public class DualColorLed implements ISensor {
+public class RgLed implements IDevice, IColorSink {
     public final int MINIMUM_INTENSITY = 0;
     public final int MAXIMUM_INTENSITY = 100;
 
@@ -28,7 +30,7 @@ public class DualColorLed implements ISensor {
         return color;
     }
 
-    public DualColorLed(int redPin, int greenPin) {
+    public RgLed(int redPin, int greenPin) {
         this.redPin = redPin;
         this.greenPin = greenPin;
     }
@@ -47,6 +49,11 @@ public class DualColorLed implements ISensor {
         enabled = false;
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+
     public int getGreenPin() {
         return greenPin;
     }
@@ -56,17 +63,24 @@ public class DualColorLed implements ISensor {
     }
 
 
-
-    public void setColor(int red, int green) throws InterruptedException {
+    public void setColor(int red, int green) {
         if (!enabled) {
             return;
         }
 
-        TimeUnit.MILLISECONDS.sleep(500);
-        SoftPwm.softPwmWrite(redPin, clampColor(red));
+        try {
+            TimeUnit.MILLISECONDS.sleep(500);
+            SoftPwm.softPwmWrite(redPin, clampColor(red));
 
-        TimeUnit.MILLISECONDS.sleep(500);
-        SoftPwm.softPwmWrite(greenPin, clampColor(green));
+            TimeUnit.MILLISECONDS.sleep(500);
+            SoftPwm.softPwmWrite(greenPin, clampColor(green));
+        } catch (InterruptedException exception) {
+            System.err.println(exception);
+        }
     }
 
+    @Override
+    public void setColor(int red, int green, int blue) {
+        setColor(red, green);
+    }
 }

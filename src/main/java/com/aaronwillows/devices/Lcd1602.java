@@ -1,18 +1,14 @@
-package com.aaronwillows.sensors;
+package com.aaronwillows.devices;
 
+import com.aaronwillows.IDevice;
+import com.aaronwillows.sensors.ILcd;
 import com.pi4j.wiringpi.Gpio;
 import com.pi4j.wiringpi.I2C;
-
-import java.io.IOException;
-import java.nio.charset.Charset;
 
 /**
  * Created by Administrator on 6/12/2016.
  */
-public class Lcd1602 implements ISensor {
-    public final int SCREEN_WIDTH = 16;
-    public final int SCREEN_HEIGHT = 2;
-
+public class Lcd1602 implements IDevice, ILcd {
     private int deviceHandle;
     private boolean enabled;
 
@@ -97,7 +93,7 @@ public class Lcd1602 implements ISensor {
         sendCommand(0x0C);
         Gpio.delay(5);
 
-        ClearScreen();
+        clear();
         I2C.wiringPiI2CWrite(deviceHandle, 0x08);
 
         enabled = true;
@@ -112,7 +108,7 @@ public class Lcd1602 implements ISensor {
         return enabled;
     }
 
-    public void ClearScreen() {
+    public void clear() {
         if (!enabled) {
             return;
         }
@@ -120,7 +116,7 @@ public class Lcd1602 implements ISensor {
         sendCommand(0x01);
     }
 
-    public void WriteCharacter(char character, int row, int column) {
+    public void write(char character, int row, int column) {
         if (!enabled || !validatePosition(row, column)) {
             return;
         }
@@ -129,41 +125,40 @@ public class Lcd1602 implements ISensor {
         sendData(character);
     }
 
-    public void WriteString(String value) {
-        WriteString(value, 0, 0, true);
+    public void write(String value) {
+        write(value, 0, 0, true);
     }
 
-    public void WriteString(String value, boolean wrap) {
-        WriteString(value, 0, 0, wrap);
+    public void write(String value, boolean wrap) {
+        write(value, 0, 0, wrap);
     }
 
-    public void WriteString(String value, int row) {
-        WriteString(value, row, 0, true);
+    public void write(String value, int row) {
+        write(value, row, 0, true);
     }
 
-    public void WriteString(String value, int row, int column) {
-        WriteString(value, row, column, true);
+    public void write(String value, int row, int column) {
+        write(value, row, column, true);
     }
 
-    public void WriteString(String value, int row, boolean wrap) {
-        WriteString(value, row, 0, true);
+    public void write(String value, int row, boolean wrap) {
+        write(value, row, 0, true);
     }
 
-    public void WriteString(String value, int row, int column, boolean wrap) {
+    public void write(String value, int row, int column, boolean wrap) {
         if (!enabled) {
             return;
         }
 
         int characterCounter = 0;
 
-
-        for (int y = column; y < SCREEN_HEIGHT; y++) {
-            for (int x = row; x < SCREEN_WIDTH; x++) {
+        for (int y = column; y < getHeight(); y++) {
+            for (int x = row; x < getWidth(); x++) {
                 if (characterCounter >= value.length()) {
                     break;
                 }
 
-                WriteCharacter(value.charAt(characterCounter++), x, y);
+                write(value.charAt(characterCounter++), x, y);
             }
 
             if (!wrap) {
@@ -171,5 +166,25 @@ public class Lcd1602 implements ISensor {
             }
         }
 
+    }
+
+    @Override
+    public int getWidth() {
+        return 16;
+    }
+
+    @Override
+    public int getHeight() {
+        return 2;
+    }
+
+    @Override
+    public char getCharacter(int row, int column) {
+        return ' ';
+    }
+
+    @Override
+    public String getCharacters(int row, int column, int length) {
+        return "";
     }
 }
