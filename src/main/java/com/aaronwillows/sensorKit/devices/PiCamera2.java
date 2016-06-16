@@ -1,7 +1,7 @@
-package com.aaronwillows.devices;
+package com.aaronwillows.sensorKit.devices;
 
-import com.aaronwillows.IDevice;
-import com.aaronwillows.sensors.IImageSource;
+import com.aaronwillows.sensorKit.IDevice;
+import com.aaronwillows.sensorKit.sensors.IImageSource;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

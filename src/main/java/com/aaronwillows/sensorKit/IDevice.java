@@ -1,4 +1,4 @@
-package com.aaronwillows;
+package com.aaronwillows.sensorKit;
 
 /**
  * Created by Administrator on 6/10/2016.

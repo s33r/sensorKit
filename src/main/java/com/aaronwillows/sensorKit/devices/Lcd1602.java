@@ -1,7 +1,7 @@
-package com.aaronwillows.devices;
+package com.aaronwillows.sensorKit.devices;
 
-import com.aaronwillows.IDevice;
-import com.aaronwillows.sensors.ILcd;
+import com.aaronwillows.sensorKit.IDevice;
+import com.aaronwillows.sensorKit.sensors.ILcd;
 import com.pi4j.wiringpi.Gpio;
 import com.pi4j.wiringpi.I2C;
 

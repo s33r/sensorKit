@@ -1,8 +1,8 @@
-package com.aaronwillows.devices.DHT11;
+package com.aaronwillows.sensorKit.devices.DHT11;
 
-import com.aaronwillows.IDevice;
-import com.aaronwillows.sensors.IHumiditySource;
-import com.aaronwillows.sensors.ITemperatureSource;
+import com.aaronwillows.sensorKit.IDevice;
+import com.aaronwillows.sensorKit.sensors.IHumiditySource;
+import com.aaronwillows.sensorKit.sensors.ITemperatureSource;
 import com.pi4j.wiringpi.Gpio;
 import com.pi4j.wiringpi.GpioUtil;
 

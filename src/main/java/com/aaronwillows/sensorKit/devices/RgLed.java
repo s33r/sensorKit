@@ -1,5 +1,7 @@
-package com.aaronwillows.sensors;
+package com.aaronwillows.sensorKit.devices;
 
+import com.aaronwillows.sensorKit.IDevice;
+import com.aaronwillows.sensorKit.sensors.IColorSink;
 import com.pi4j.wiringpi.SoftPwm;
 
 import java.util.concurrent.TimeUnit;
@@ -7,8 +9,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by Administrator on 6/10/2016.
  */
-public class RgbLed implements ISensor {
-
+public class RgLed implements IDevice, IColorSink {
     public final int MINIMUM_INTENSITY = 0;
     public final int MAXIMUM_INTENSITY = 100;
 
@@ -16,8 +17,6 @@ public class RgbLed implements ISensor {
 
     private int redPin;
     private int greenPin;
-    private int bluePin;
-
 
     private int clampColor(int color) {
         if (color < MINIMUM_INTENSITY) {
@@ -31,16 +30,14 @@ public class RgbLed implements ISensor {
         return color;
     }
 
-    public RgbLed(int redPin, int greenPin, int bluePin) {
+    public RgLed(int redPin, int greenPin) {
         this.redPin = redPin;
         this.greenPin = greenPin;
-        this.bluePin = bluePin;
     }
 
     public void enable() {
         SoftPwm.softPwmCreate(redPin, MINIMUM_INTENSITY, MAXIMUM_INTENSITY);
         SoftPwm.softPwmCreate(greenPin, MINIMUM_INTENSITY, MAXIMUM_INTENSITY);
-        SoftPwm.softPwmCreate(bluePin, MINIMUM_INTENSITY, MAXIMUM_INTENSITY);
 
         enabled = true;
     }
@@ -48,10 +45,14 @@ public class RgbLed implements ISensor {
     public void disable() {
         SoftPwm.softPwmStop(redPin);
         SoftPwm.softPwmStop(greenPin);
-        SoftPwm.softPwmStop(bluePin);
 
         enabled = false;
     }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
 
     public int getGreenPin() {
         return greenPin;
@@ -61,22 +62,25 @@ public class RgbLed implements ISensor {
         return redPin;
     }
 
-    public int getBluePin() {
-        return bluePin;
-    }
 
-    public void setColor(int red, int green, int blue) throws InterruptedException {
+    public void setColor(int red, int green) {
         if (!enabled) {
             return;
         }
 
-        TimeUnit.MILLISECONDS.sleep(500);
-        SoftPwm.softPwmWrite(redPin, clampColor(red));
+        try {
+            TimeUnit.MILLISECONDS.sleep(500);
+            SoftPwm.softPwmWrite(redPin, clampColor(red));
 
-        TimeUnit.MILLISECONDS.sleep(500);
-        SoftPwm.softPwmWrite(greenPin, clampColor(green));
+            TimeUnit.MILLISECONDS.sleep(500);
+            SoftPwm.softPwmWrite(greenPin, clampColor(green));
+        } catch (InterruptedException exception) {
+            System.err.println(exception);
+        }
+    }
 
-        TimeUnit.MILLISECONDS.sleep(500);
-        SoftPwm.softPwmWrite(bluePin, clampColor(blue));
+    @Override
+    public void setColor(int red, int green, int blue) {
+        setColor(red, green);
     }
 }

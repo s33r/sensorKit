@@ -1,7 +1,7 @@
-package com.aaronwillows.devices;
+package com.aaronwillows.sensorKit.devices;
 
-import com.aaronwillows.IDevice;
-import com.aaronwillows.sensors.IDetectionSource;
+import com.aaronwillows.sensorKit.IDevice;
+import com.aaronwillows.sensorKit.sensors.IDetectionSource;
 import com.pi4j.wiringpi.Gpio;
 
 import java.util.function.Consumer;

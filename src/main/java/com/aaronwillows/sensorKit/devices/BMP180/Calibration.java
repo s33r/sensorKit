@@ -1,8 +1,5 @@
-package com.aaronwillows.devices.BMP180;
+package com.aaronwillows.sensorKit.devices.BMP180;
 
-/**
- * Created by Administrator on 6/14/2016.
- */
 public class Calibration {
 
     private int ac1;

@@ -1,9 +1,12 @@
-package com.aaronwillows;
+package com.aaronwillows.sensorKit.devices.DHT11;
+
+import com.aaronwillows.sensorKit.sensors.IHumidityData;
+import com.aaronwillows.sensorKit.sensors.ITemperatureData;
 
 /**
  * Created by Administrator on 6/10/2016.
  */
-public class HumitureData {
+public class HumitureData implements ITemperatureData, IHumidityData {
 
     private double temperature;
     private double humidity;

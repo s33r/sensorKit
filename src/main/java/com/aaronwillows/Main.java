@@ -1,20 +1,19 @@
 package com.aaronwillows;
 
 
-import com.aaronwillows.devices.BMP180.Barometer;
-import com.aaronwillows.devices.BMP180.BarometerData;
-import com.aaronwillows.devices.DHT11.HumitureData;
-import com.aaronwillows.devices.DHT11.HumitureSensor;
-import com.aaronwillows.devices.IrObstacleSensor;
-import com.aaronwillows.devices.Lcd1602;
-import com.aaronwillows.devices.PiCamera2;
-import com.aaronwillows.devices.RgbLed;
+import com.aaronwillows.sensorKit.devices.BMP180.Barometer;
+import com.aaronwillows.sensorKit.devices.BMP180.BarometerData;
+import com.aaronwillows.sensorKit.devices.DHT11.HumitureData;
+import com.aaronwillows.sensorKit.devices.DHT11.HumitureSensor;
+import com.aaronwillows.sensorKit.devices.IrObstacleSensor;
+import com.aaronwillows.sensorKit.devices.Lcd1602;
+import com.aaronwillows.sensorKit.devices.PiCamera2;
+import com.aaronwillows.sensorKit.devices.RgbLed;
 import com.pi4j.system.SystemInfo;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 public class Main {
@@ -25,7 +24,7 @@ public class Main {
 
         System.out.println("Board: " + SystemInfo.getBoardType().toString());
 
-        lcdBarometerTest();
+        testIrObstacle();
     }
 
     private static void lcdBarometerTest() throws Exception {
@@ -42,10 +41,12 @@ public class Main {
 
             String line1 = "T: " + data.getTemperature() + "c";
             String line2 = "P: " + data.getPressure() + "pa";
+            String line3 = "A: " + data.getAltitude() + "m";
 
             System.out.println("-- -- -- -- --");
             System.out.println(line1);
             System.out.println(line2);
+            System.out.println(line3);
 
             lcd.write(line1, 0, 0);
             lcd.write(line2, 0, 1);
@@ -123,11 +124,11 @@ public class Main {
 
     private static void testIrObstacle() throws Exception {
         IrObstacleSensor sensor = new IrObstacleSensor(0);
+        sensor.setConsumer(aVoid -> System.out.println("Blocking"));
         sensor.enable();
 
-        TimeUnit.SECONDS.sleep(30);
-
-        sensor.disable();
+        while (true) {
+        }
     }
 
     private static void testHumitureSensor() throws Exception {

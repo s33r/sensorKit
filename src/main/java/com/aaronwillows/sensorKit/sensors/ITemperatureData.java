@@ -1,4 +1,4 @@
-package com.aaronwillows.sensors;
+package com.aaronwillows.sensorKit.sensors;
 
 /**
  * Specifies an interface for sensor data that contains temperature information.

@@ -1,4 +1,4 @@
-package com.aaronwillows.sensors;
+package com.aaronwillows.sensorKit.sensors;
 
 import java.awt.image.BufferedImage;
 

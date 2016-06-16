@@ -1,15 +1,16 @@
-package com.aaronwillows.devices.BMP180;
+package com.aaronwillows.sensorKit.devices.BMP180;
 
-import com.aaronwillows.IDevice;
-import com.aaronwillows.sensors.IPressureSource;
-import com.aaronwillows.sensors.ITemperatureSource;
+import com.aaronwillows.sensorKit.IDevice;
+import com.aaronwillows.sensorKit.sensors.IAltitudeSource;
+import com.aaronwillows.sensorKit.sensors.IPressureSource;
+import com.aaronwillows.sensorKit.sensors.ITemperatureSource;
 import com.pi4j.wiringpi.Gpio;
 import com.pi4j.wiringpi.I2C;
 
 import java.util.PrimitiveIterator;
 import java.util.stream.IntStream;
 
-public class Barometer implements IDevice, ITemperatureSource, IPressureSource {
+public class Barometer implements IDevice, ITemperatureSource, IPressureSource, IAltitudeSource {
     private final int DEVICE_ID = 0x77;
 
     private final int EPROM_OFFSET = 0xAA;
@@ -133,7 +134,6 @@ public class Barometer implements IDevice, ITemperatureSource, IPressureSource {
         int rawPressure = readPressure();
 
         result = calculateTrueValues(rawTemperature, rawPressure);
-
 
         return result;
     }

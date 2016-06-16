@@ -1,9 +1,7 @@
-package com.aaronwillows.devices.BMP180;
+package com.aaronwillows.sensorKit.devices.BMP180;
 
 import junit.framework.TestCase;
-import org.junit.Assert;
 
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
 /**
