@@ -1,14 +1,10 @@
 package com.aaronwillows.sensorKit.devices;
 
-import com.aaronwillows.sensorKit.IDevice;
 import com.aaronwillows.sensorKit.sensors.ILcd;
 import com.pi4j.wiringpi.Gpio;
 import com.pi4j.wiringpi.I2C;
 
-/**
- * Created by Administrator on 6/12/2016.
- */
-public class Lcd1602 implements IDevice, ILcd {
+public class Lcd1602 implements ILcd {
     private int deviceHandle;
     private boolean enabled;
 
@@ -19,16 +15,6 @@ public class Lcd1602 implements IDevice, ILcd {
     }
 
     private void writeWord(int data) {
-
-        /* No idea what BLEN is, its set to one and then never changed
-        int temp = data;
-        if ( BLEN == 1 )
-            temp |= 0x08;
-        else
-            temp &= 0xF7;
-        I2C.wiringPiI2CWrite(deviceHandle, temp);
-        */
-
         I2C.wiringPiI2CWrite(deviceHandle, data | 0x08);
     }
 
@@ -69,11 +55,11 @@ public class Lcd1602 implements IDevice, ILcd {
     }
 
     private boolean validatePosition(int row, int column) {
-        return row >= 0 && row <= 15 && (column == 0 || column == 1);
+        return column >= 0 && column <= 15 && (row == 0 || row == 1);
     }
 
     private int getAddress(int row, int column) {
-        return 0x80 + (0x40 * column) + row;
+        return 0x80 + (0x40 * row) + column;
     }
 
 
@@ -152,13 +138,13 @@ public class Lcd1602 implements IDevice, ILcd {
 
         int characterCounter = 0;
 
-        for (int y = column; y < getHeight(); y++) {
-            for (int x = row; x < getWidth(); x++) {
+        for (int y = row; y < getHeight(); y++) {
+            for (int x = column; x < getWidth(); x++) {
                 if (characterCounter >= value.length()) {
                     break;
                 }
 
-                write(value.charAt(characterCounter++), x, y);
+                write(value.charAt(characterCounter++), y, x);
             }
 
             if (!wrap) {

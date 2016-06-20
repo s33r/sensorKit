@@ -1,19 +1,19 @@
 package com.aaronwillows;
 
 
+import com.aaronwillows.sensorKit.devices.*;
 import com.aaronwillows.sensorKit.devices.BMP180.Barometer;
 import com.aaronwillows.sensorKit.devices.BMP180.BarometerData;
 import com.aaronwillows.sensorKit.devices.DHT11.HumitureData;
 import com.aaronwillows.sensorKit.devices.DHT11.HumitureSensor;
-import com.aaronwillows.sensorKit.devices.IrObstacleSensor;
-import com.aaronwillows.sensorKit.devices.Lcd1602;
-import com.aaronwillows.sensorKit.devices.PiCamera2;
-import com.aaronwillows.sensorKit.devices.RgbLed;
+import com.aaronwillows.sensorKit.devices.HCSR04.RangeData;
+import com.aaronwillows.sensorKit.devices.HCSR04.UltrasonicRanger;
 import com.pi4j.system.SystemInfo;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.text.DecimalFormat;
 import java.util.concurrent.TimeUnit;
 
 public class Main {
@@ -24,7 +24,44 @@ public class Main {
 
         System.out.println("Board: " + SystemInfo.getBoardType().toString());
 
-        testIrObstacle();
+        weatherStationTest();
+    }
+
+    private static void weatherStationTest() throws Exception{
+        WeatherStation station = new WeatherStation();
+        station.enable();
+
+        while(true) {
+            WeatherData data = station.getData();
+            System.out.println(data);
+
+
+            TimeUnit.SECONDS.sleep(1);
+        }
+    }
+
+    private static void ultrasonicRangerTest() throws Exception {
+        DecimalFormat outputFormat = new DecimalFormat("#.000");
+
+        Lcd1602 lcd = new Lcd1602();
+        lcd.enable();
+        lcd.clear();
+
+        UltrasonicRanger sensor = new UltrasonicRanger(0, 1);
+        sensor.enable();
+
+        while (true) {
+            RangeData rangeData = sensor.getData();
+            String dataString = outputFormat.format(rangeData.getDistance());
+
+
+            lcd.write(dataString);
+
+            System.out.println(dataString);
+
+            TimeUnit.SECONDS.sleep(1);
+        }
+
     }
 
     private static void lcdBarometerTest() throws Exception {

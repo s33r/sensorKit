@@ -1,9 +1,11 @@
 package com.aaronwillows.sensorKit.sensors;
 
+import com.aaronwillows.sensorKit.IDevice;
+
 /**
  * Created by Administrator on 6/14/2016.
  */
-public interface ILcd {
+public interface ILcd extends IDevice{
     void clear();
 
     void write(char character, int row, int column);

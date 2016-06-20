@@ -1,10 +1,13 @@
 package com.aaronwillows.sensorKit;
 
 /**
- * Created by Administrator on 6/10/2016.
+ * Devices are any hardware like sensors or lcd displays.
  */
 public interface IDevice {
+
     void enable();
+
     void disable();
+
     boolean isEnabled();
 }
